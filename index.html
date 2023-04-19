@@ -1,0 +1,93 @@
+<!-- websockets.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharecode</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;900&display=swap');
+
+    h1 {
+        font-family: Inter;
+        text-align: center;
+        color: white;
+    }
+
+    textarea {
+        resize: none;
+        padding: 20px;
+        border-radius: 20px;
+        outline: none;
+        width: 600px;
+        margin: auto;
+        height: 70vh;
+        background-color: rgb(0, 3, 17);
+        color: rgb(240, 240, 240);
+    }
+
+    body {
+        height: 100vh;
+        overflow-y: hidden;
+        padding: 10px;
+        background: linear-gradient(#000 , rgb(38, 3, 90));
+    }
+
+    #wrap{
+        width: fit-content;
+        margin: auto;
+    }
+
+    #output{
+        padding: 6px;
+        background: rgb(255, 255, 255);
+        color: rgb(1, 1, 1);
+        border-radius: 10px;
+        width: fit-content ;
+        text-align: center;
+        margin: auto;
+        margin-bottom: 6px;
+    }
+
+    footer{
+        position: fixed;
+        right: 12px;
+        bottom: 12px;
+        font-family: monospace;
+        color: white;
+        opacity: 40%;
+    }
+</style>
+
+<body>
+<h1>Sharecode</h1>
+<pre id="output"></pre>
+    <div id="wrap"><textarea id="input" placeholder="Type your code  here..." spellcheck="false" onkeyup="send()"></textarea></div>
+<footer>Sharecode. Made by @ndzhwr</footer>
+    <!-- <button onclick="send()">Send</button> -->
+    <script>
+        id  = prompt("Insert snippet id or enter a new one")
+        var input = document.getElementById("input");
+        var output = document.getElementById("output");
+        var socket = new WebSocket(`ws://localhost:4000/s/${id}`);
+
+        socket.onopen = function () {
+            output.innerHTML += "🟢 Connected";
+            send();
+        };
+        socket.onerror = function () {
+            output.innerHTML += "🔴Connection Error";
+        };
+        socket.onmessage = function (e) {
+            input.value = e.data;
+        };
+        function send() {
+            socket.send(input.value);
+        }
+    </script>
+</body>
+
+</html>
