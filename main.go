@@ -23,6 +23,9 @@ func main() {
 	router.GET("/css", func(c *gin.Context) {
 		http.ServeFile(c.Writer ,c.Request, "assets/style.css" )
 	})
+	router.GET("/ico", func(c *gin.Context) {
+		http.ServeFile(c.Writer ,c.Request, "assets/favicon.svg" )
+	})
 	// routes
 	router.GET("/", controllers.MainRoute)
 	router.GET("/s/:id", controllers.NewSnippet)

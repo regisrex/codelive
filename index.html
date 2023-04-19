@@ -8,12 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sharecode</title>
     <link rel="stylesheet" href="/css">
+    <link rel="shortcut icon" href="/ico" type="image/svg">
 </head>
 
 <body>
     <h1>Sharecode</h1>
     <p id="output"></p>
-    <div id="wrap"><textarea id="input" placeholder="Paste your code here..."  spellcheck="false"
+    <div id="wrap"><textarea id="input" placeholder="Paste your code here..." spellcheck="false"
             onkeyup="send()"></textarea></div>
     <footer>Made with ♥ by <a target="_blank" href="https://github.com/ndzhwr">ndzhwr</a></footer>
     <!-- <button onclick="send()">Send</button> -->
@@ -31,14 +32,14 @@
         var socket = window.location.hostname == 'localhost' ? new WebSocket(`ws://localhost:4000/s/${id}`) : new WebSocket(`wss://sc-9tv2.onrender.com/s/${id}`);
         output.innerHTML = "🟡 Connecting to " + id + "...&nbsp;";
         socket.onopen = function () {
-            connected = true ;
+            connected = true;
             input.disabled = false;
             output.innerHTML = "🟢 Connected to " + id;
         };
         socket.onerror = function (e) {
-            input.disabled = true ;
+            input.disabled = true;
             input.style.cursor = "disabled"
-            connected = false ;
+            connected = false;
             output.innerHTML = "🔴Connection Error <span id='rld' onclick='rld()'>Try reload</span>";
         };
         socket.onmessage = function (e) {
