@@ -5,16 +5,15 @@ import (
 	"log"
 	"net/http"
 	"sharecode/utils"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
 func MainRoute(c *gin.Context) {
-	http.ServeFile(c.Writer , c.Request , "index.html")
+	http.ServeFile(c.Writer, c.Request, "index.html")
 }
-
-
 
 type Client struct {
 	Conn *websocket.Conn
@@ -24,8 +23,14 @@ type Client struct {
 var clients []Client
 
 func NewSnippet(c *gin.Context) {
-	id := c.Param("id")
+	id  := c.Param("id")
 	fmt.Println(id)
+	if strings.TrimSpace(id) == "" {
+		log.Fatal("No Id provided")
+		c.JSON(500, gin.H{
+			"message": "Internal Server Error",
+		})
+	}
 	conn, err := utils.Upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Fatal("An error occured connecting to the server")

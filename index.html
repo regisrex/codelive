@@ -11,30 +11,39 @@
 </head>
 
 <body>
-<h1>Sharecode</h1>
-<pre id="output"></pre>
-    <div id="wrap"><textarea id="input" placeholder="Type your code  here..." spellcheck="false" onkeyup="send()"></textarea></div>
-<footer>Sharecode. Made by @ndzhwr</footer>
+    <h1>Sharecode</h1>
+    <p id="output"></p>
+    <div id="wrap"><textarea id="input" placeholder="Paste your code here..." spellcheck="false"
+            onkeyup="send()"></textarea></div>
+    <footer>Made with ♥ by ndzhwr</footer>
     <!-- <button onclick="send()">Send</button> -->
     <script>
-        id  = prompt("Insert snippet id or enter a new one")
+        id = prompt("Insert snippet id or enter a new one")
+        if (!id || id.trim() == "") {
+            alert("Invalid snipped ID")
+        }
         var input = document.getElementById("input");
         var output = document.getElementById("output");
-        var socket = new WebSocket(`wss://sc-9tv2.onrender.com/s/${id}`);
-
+        var socket = window.location.hostname == 'localhost' ? new WebSocket(`ws://localhost:4000/s/${id}`) : new WebSocket(`wss://sc-9tv2.onrender.com/s/${id}`);
+        output.innerHTML = "🟡 Connecting to" + id + "...&nbsp;";
         socket.onopen = function () {
-            output.innerHTML += "🟢 Connected";
-            send();
+            setTimeout(() => {
+                output.innerHTML = "🟢 Connected to " + id;
+
+            }, 1000);
         };
         socket.onerror = function (e) {
             console.log(e)
-            output.innerHTML += "🔴Connection Error";
+            output.innerHTML = "🔴Connection Error <span id='rld' onclick='rld()'>Try reload</span>";
         };
         socket.onmessage = function (e) {
             input.value = e.data;
         };
         function send() {
             socket.send(input.value);
+        }
+        function rld() {
+            window.location.reload();
         }
     </script>
 </body>
