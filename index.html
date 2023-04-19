@@ -13,12 +13,16 @@
 <body>
     <h1>Sharecode</h1>
     <p id="output"></p>
-    <div id="wrap"><textarea id="input" placeholder="Paste your code here..." spellcheck="false"
+    <div id="wrap"><textarea id="input" placeholder="Paste your code here..."  spellcheck="false"
             onkeyup="send()"></textarea></div>
     <footer>Made with ♥ by ndzhwr</footer>
     <!-- <button onclick="send()">Send</button> -->
     <script>
-        id = prompt("Insert snippet id or enter a new one")
+        var connected = false;
+        var id = prompt("Insert snippet id or enter a new one")
+        if (id == null) {
+            id = prompt("Insert snippet id or enter a new one")
+        }
         if (!id || id.trim() == "") {
             alert("Invalid snipped ID")
         }
@@ -27,13 +31,14 @@
         var socket = window.location.hostname == 'localhost' ? new WebSocket(`ws://localhost:4000/s/${id}`) : new WebSocket(`wss://sc-9tv2.onrender.com/s/${id}`);
         output.innerHTML = "🟡 Connecting to " + id + "...&nbsp;";
         socket.onopen = function () {
-            setTimeout(() => {
-                output.innerHTML = "🟢 Connected to " + id;
-
-            }, 1000);
+            connected = true ;
+            input.disabled = false;
+            output.innerHTML = "🟢 Connected to " + id;
         };
         socket.onerror = function (e) {
-            console.log(e)
+            input.disabled = true ;
+            input.style.cursor = "disabled"
+            connected = false ;
             output.innerHTML = "🔴Connection Error <span id='rld' onclick='rld()'>Try reload</span>";
         };
         socket.onmessage = function (e) {

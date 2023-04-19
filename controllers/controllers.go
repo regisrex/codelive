@@ -23,8 +23,8 @@ type Client struct {
 var clients []Client
 
 func NewSnippet(c *gin.Context) {
-	id  := c.Param("id")
-	if strings.TrimSpace(id) == "" {
+	id  := strings.TrimSpace(c.Param("id"))
+	if id == "" || id == "null" {	
 		log.Fatal("No Id provided")
 		c.JSON(500, gin.H{
 			"message": "Internal Server Error",
