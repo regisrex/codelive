@@ -25,7 +25,7 @@
         var input = document.getElementById("input");
         var output = document.getElementById("output");
         var socket = window.location.hostname == 'localhost' ? new WebSocket(`ws://localhost:4000/s/${id}`) : new WebSocket(`wss://sc-9tv2.onrender.com/s/${id}`);
-        output.innerHTML = "🟡 Connecting to" + id + "...&nbsp;";
+        output.innerHTML = "🟡 Connecting to " + id + "...&nbsp;";
         socket.onopen = function () {
             setTimeout(() => {
                 output.innerHTML = "🟢 Connected to " + id;

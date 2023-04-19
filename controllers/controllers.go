@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"sharecode/utils"
@@ -18,13 +17,13 @@ func MainRoute(c *gin.Context) {
 type Client struct {
 	Conn *websocket.Conn
 	Id   string
+	Address string ;
 }
 
 var clients []Client
 
 func NewSnippet(c *gin.Context) {
 	id  := c.Param("id")
-	fmt.Println(id)
 	if strings.TrimSpace(id) == "" {
 		log.Fatal("No Id provided")
 		c.JSON(500, gin.H{
@@ -41,6 +40,7 @@ func NewSnippet(c *gin.Context) {
 	newCli := Client{
 		Conn: conn,
 		Id:   id,
+		Address: conn.RemoteAddr().String(),
 	}
 
 	clients = append(clients, newCli)
@@ -50,8 +50,14 @@ func NewSnippet(c *gin.Context) {
 		if err != nil {
 			return
 		}
-
+		var destinationclients []Client ;
+		
 		for _, client := range clients {
+			if client.Address != conn.RemoteAddr().String() {
+				destinationclients = append(destinationclients, client)
+			}
+		}
+		for _, client := range destinationclients {
 			if client.Id == id {
 				client.Conn.WriteMessage(mt, m)
 			}
