@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 *{
-    font-family: Inter;
+    font-family: Inte, sans-serif ;
 }
 h1 {
     text-align: center;
@@ -48,16 +48,27 @@ footer{
     position: fixed;
     right: 12px;
     bottom: 12px;
-    font-family: monospace;
+    font-size: 13px;
+    font-family: "Fira Code", monospace; 
     color: white;
     opacity: 40%;
 }
 
+a{
+ text-decoration: none;
+ color: inherit;
+ margin: 0;
+ padding: 0;  
+ font-family: "Fira Code", monospace; 
+
+ 
+}
 #rld{
     text-decoration: underline;
     color: dodgerblue;
     cursor: pointer ;
 }
+
 
 /* ===== Scrollbar CSS ===== */
   /* Firefox */
