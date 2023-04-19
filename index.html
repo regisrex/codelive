@@ -20,13 +20,14 @@
         id  = prompt("Insert snippet id or enter a new one")
         var input = document.getElementById("input");
         var output = document.getElementById("output");
-        var socket = new WebSocket(`ws://sc-9tv2.onrender.com/s/${id}`);
+        var socket = new WebSocket(`wss://sc-9tv2.onrender.com/s/${id}`);
 
         socket.onopen = function () {
             output.innerHTML += "🟢 Connected";
             send();
         };
-        socket.onerror = function () {
+        socket.onerror = function (e) {
+            console.log(e)
             output.innerHTML += "🔴Connection Error";
         };
         socket.onmessage = function (e) {
