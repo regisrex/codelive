@@ -14,7 +14,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
     * {
-        font-family: Inte, sans-serif;
+        font-family: Inter, sans-serif;
     }
 
     h1 {
@@ -146,17 +146,17 @@
         };
         socket.onclose = function () {
             connected = false;
-            output.innerHTML = "⭕ Disconnected";
-            setTimeout(() => {
-                if (connected == false && socket.CLOSED == 3) { output.innerHTML = "🟡 Reconnecting..."; }
-            }, 2000);
-            let interval = setInterval(() => {
-                socket = window.location.hostname == 'localhost' ? new WebSocket(`ws://localhost:4000/s/${id}`) : new WebSocket(`wss://sc-9tv2.onrender.com/s/${id}`);
-                console.log(connected)
-                if (connected) {
-                    clearInterval(interval)
-                }
-            }, 30000);
+            output.innerHTML = "⭕ Disconnected  <span id='rld' onclick='rld()'>reconnect</span>";
+            // setTimeout(() => {
+            //     if (connected == false && socket.CLOSED == 3) { output.innerHTML = "🟡 Reconnecting..."; }
+            // }, 2000);
+            // let interval = setInterval(() => {
+            //     socket = window.location.hostname == 'localhost' ? new WebSocket(`ws://localhost:4000/s/${id}`) : new WebSocket(`wss://sc-9tv2.onrender.com/s/${id}`);
+            //     console.log(connected)
+            //     if (connected) {
+            //         clearInterval(interval)
+            //     }
+            // }, 30000);
         }
 
         function send() {

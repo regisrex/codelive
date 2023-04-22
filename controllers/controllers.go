@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"sharecode/utils"
 	"strings"
@@ -25,15 +24,12 @@ var clients []Client
 func NewSnippet(c *gin.Context) {
 	id  := strings.TrimSpace(c.Param("id"))
 	if id == "" || id == "null" {	
-		fmt.Println("No Id provided")
-		c.JSON(500,nil)
-		return
+		c.AbortWithStatus(http.StatusNotAcceptable)
+		return ;
 	}
 	conn, err := utils.Upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"error": "Irror not defined",
-		})
+		c.AbortWithStatus(http.StatusNotAcceptable)
 	}
 	newCli := Client{
 		Conn: conn,
