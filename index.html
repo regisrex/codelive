@@ -7,9 +7,107 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sharecode</title>
-    <link rel="stylesheet" href="/css">
     <link rel="shortcut icon" href="/ico" type="image/svg">
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+    * {
+        font-family: Inte, sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+        color: white;
+    }
+
+    textarea {
+        font-family: "Fira Code", monospace;
+        resize: none;
+        padding: 20px;
+        border-radius: 20px;
+        outline: none;
+        width: 600px;
+        margin: auto;
+        height: 70vh;
+        background-color: rgb(20, 19, 22);
+        color: rgb(240, 240, 240);
+    }
+
+    body {
+        height: 100vh;
+        overflow-y: hidden;
+        background: linear-gradient(#000, rgb(43, 0, 83));
+    }
+
+    #wrap {
+        width: fit-content;
+        margin: auto;
+    }
+
+    #output {
+        padding: 6px 10px;
+        font-size: 14px;
+        background: rgb(255, 255, 255);
+        color: rgb(1, 1, 1);
+        border-radius: 50px;
+        width: fit-content;
+        text-align: center;
+        margin: auto;
+        margin-bottom: 10px;
+    }
+
+    footer {
+        position: fixed;
+        right: 12px;
+        bottom: 12px;
+        font-size: 13px;
+        font-family: "Fira Code", monospace;
+        color: white;
+        opacity: 40%;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+        margin: 0;
+        padding: 0;
+        font-family: "Fira Code", monospace;
+
+
+    }
+
+    #rld {
+        text-decoration: underline;
+        color: dodgerblue;
+        cursor: pointer;
+    }
+
+
+    /* ===== Scrollbar CSS ===== */
+    /* Firefox */
+    * {
+        scrollbar-width: auto;
+        scrollbar-color: #ffffff00;
+        margin: 20px;
+    }
+
+    /* Chrome, Edge, and Safari */
+    *::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: #00000000;
+        margin: 20px 4px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: #ffffff32;
+        border-radius: 10px;
+    }
+</style>
 
 <body>
     <h1>Sharecode</h1>
@@ -37,14 +135,30 @@
             output.innerHTML = "🟢 Connected to " + id;
         };
         socket.onerror = function (e) {
+            e.preventDefault();
             input.disabled = true;
             input.style.cursor = "disabled"
             connected = false;
-            output.innerHTML = "🔴Connection Error <span id='rld' onclick='rld()'>Try reload</span>";
+            output.innerHTML = "🔴 Can't connect <span id='rld' onclick='rld()'>Try reload</span>";
         };
         socket.onmessage = function (e) {
             input.value = e.data;
         };
+        socket.onclose = function () {
+            connected = false;
+            output.innerHTML = "⭕ Disconnected";
+            setTimeout(() => {
+                if (connected == false && socket.CLOSED == 3) { output.innerHTML = "🟡 Reconnecting..."; }
+            }, 2000);
+            let interval = setInterval(() => {
+                socket = window.location.hostname == 'localhost' ? new WebSocket(`ws://localhost:4000/s/${id}`) : new WebSocket(`wss://sc-9tv2.onrender.com/s/${id}`);
+                console.log(connected)
+                if (connected) {
+                    clearInterval(interval)
+                }
+            }, 30000);
+        }
+
         function send() {
             socket.send(input.value);
         }

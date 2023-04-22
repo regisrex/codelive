@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"sharecode/utils"
 	"strings"
@@ -25,16 +25,14 @@ var clients []Client
 func NewSnippet(c *gin.Context) {
 	id  := strings.TrimSpace(c.Param("id"))
 	if id == "" || id == "null" {	
-		log.Fatal("No Id provided")
-		c.JSON(500, gin.H{
-			"message": "Internal Server Error",
-		})
+		fmt.Println("No Id provided")
+		c.JSON(500,nil)
+		return
 	}
 	conn, err := utils.Upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		log.Fatal("An error occured connecting to the server")
-		c.JSON(500, gin.H{
-			"message": "Internal Server Error",
+		c.JSON(http.StatusNotAcceptable, gin.H{
+			"error": "Irror not defined",
 		})
 	}
 	newCli := Client{

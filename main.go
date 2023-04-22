@@ -20,9 +20,6 @@ func main() {
 	// fs := http.FileServer(http.Dir("assets"))
 	// http.Handle("/st/", http.StripPrefix("/st/", fs))
 
-	router.GET("/css", func(c *gin.Context) {
-		http.ServeFile(c.Writer ,c.Request, "assets/style.css" )
-	})
 	router.GET("/ico", func(c *gin.Context) {
 		http.ServeFile(c.Writer ,c.Request, "assets/favicon.svg" )
 	})
