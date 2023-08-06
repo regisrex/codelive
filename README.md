@@ -1,4 +1,5 @@
 ## <b><pre>sharecode</pre> </b>
-Share code with anyone, in realtime.
+Share code with anyone, in realtime.  
+Access it easily 👉 [https://tinyurl.com/sharecodenr](https://tinyurl.com/sharecodenr) 
 
-[@ndzhwr](https://twitter.com/ndzhwr). 2023
+🔨✂️🔦 Mar-2023
